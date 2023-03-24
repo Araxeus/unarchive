@@ -17,7 +17,7 @@ export async function unarchive(input: string, dest?: string) {
         default:
             try {
                 await compressing.zip.uncompress(input, dest);
-            } catch(e) {
+            } catch (e) {
                 console.error(e);
                 throw new Error(`Unknown file type for ${input}`);
             }

@@ -2,7 +2,7 @@
   "name": "unarchive",
   "author": "Araxeus",
   "description": "Automatically extract archives of various types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "license": "MIT",
   "repository": "https://github.com/Araxeus/unarchive",
@@ -12,7 +12,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {

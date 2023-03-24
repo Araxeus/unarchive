@@ -3,21 +3,22 @@ import compressing from 'compressing';
 import { removeExtension } from './utils.js';
 export async function unarchive(input, dest) {
     const type = await fileTypeFromFile(input);
-    if (!type?.ext) {
-        throw new Error(`Unknown file type for ${input}`);
-    }
     dest ||= removeExtension(input);
-    switch (type.ext) {
-        case 'zip':
-            await compressing.zip.uncompress(input, dest);
-            break;
+    switch (type?.ext) {
         case 'tar':
             await compressing.tar.uncompress(input, dest);
             break;
         case 'gz':
             await compressing.tgz.uncompress(input, dest);
             break;
+        case 'zip':
         default:
-            throw new Error(`Unknown file type for ${input}`);
+            try {
+                await compressing.zip.uncompress(input, dest);
+            }
+            catch (e) {
+                console.error(e);
+                throw new Error(`Unknown file type for ${input}`);
+            }
     }
 }

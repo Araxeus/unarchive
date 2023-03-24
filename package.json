@@ -2,7 +2,7 @@
   "name": "unarchive",
   "author": "Araxeus",
   "description": "Automatically extract archives of various types",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "license": "MIT",
   "repository": "https://github.com/Araxeus/unarchive",
@@ -36,7 +36,7 @@
   ],
   "devDependencies": {
     "@types/node": "^18.15.7",
-    "typescript": "^5.0.2",
-    "rome": "^11.0.0"
+    "rome": "^11.0.0",
+    "typescript": "^5.0.2"
   }
 }

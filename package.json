@@ -23,8 +23,7 @@
   },
   "dependencies": {
     "compressing": "^1.8.0",
-    "file-type": "^18.2.1",
-    "rome": "^11.0.0"
+    "file-type": "^18.2.1"
   },
   "keywords": [
     "uncompress",
@@ -36,6 +35,7 @@
   ],
   "devDependencies": {
     "@types/node": "^18.15.7",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.2",
+    "rome": "^11.0.0"
   }
 }

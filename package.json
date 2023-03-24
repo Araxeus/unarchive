@@ -1,0 +1,41 @@
+{
+  "name": "unarchive",
+  "author": "Araxeus",
+  "description": "Automatically extract archives of various types",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "repository": "https://github.com/Araxeus/unarchive",
+  "packageManager": "yarn@3.5.0",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "start": "tsc && node ./dist/cli.js",
+    "build": "tsc",
+    "format": "rome format . --write",
+    "test": "tsc && rome ci . && node ./dist/tests/test.js"
+  },
+  "dependencies": {
+    "compressing": "^1.8.0",
+    "file-type": "^18.2.1",
+    "rome": "^11.0.0"
+  },
+  "keywords": [
+    "uncompress",
+    "archive",
+    "tar",
+    "zip",
+    "tgz",
+    "gzip"
+  ],
+  "devDependencies": {
+    "@types/node": "^18.15.7",
+    "typescript": "^5.0.2"
+  }
+}

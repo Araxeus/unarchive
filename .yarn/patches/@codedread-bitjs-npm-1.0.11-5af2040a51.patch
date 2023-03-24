@@ -1,0 +1,20 @@
+diff --git a/package.json b/package.json
+index 85d9428efd3e6d8710e3c8dbfebbcc7854be5a35..35dcbf2874337d9bcfa51fea5726421fc733c2c3 100644
+--- a/package.json
++++ b/package.json
+@@ -25,7 +25,14 @@
+   "main": "./index.js",
+   "type": "module",
+   "types": "types/index.d.ts",
+-  "exports": "./index.js",
++  "exports": {
++    ".": {
++      "import": "./index.js"
++    },
++    "./types": {
++      "import": "./types/index.d.ts"
++    }
++  },
+   "repository": {
+     "type": "git",
+     "url": "git+https://github.com/codedread/bitjs.git"

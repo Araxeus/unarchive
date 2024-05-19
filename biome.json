@@ -1,9 +1,15 @@
 {
+  "$schema": "https://biomejs.dev/schemas/1.7.3/schema.json",
   "files": {
     "ignore": [
       "./.pnp.*",
       "./dist/*"
     ]
+  },
+  "json": {
+    "formatter": {
+      "enabled": false
+    }
   },
   "javascript": {
     "formatter": {
@@ -13,7 +19,7 @@
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "indentSize": 4
+    "indentWidth": 4
   },
   "linter": {
     "enabled": true,
@@ -22,6 +28,9 @@
       "correctness": {
         "noUndeclaredVariables": "error",
         "noUnusedVariables": "error"
+      },
+      "style": {
+        "noParameterAssign": "off"
       },
       "nursery": {
         "recommended": true

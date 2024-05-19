@@ -1,5 +1,5 @@
-import path from 'node:path';
 import { readFile, rm } from 'node:fs/promises';
+import path from 'node:path';
 
 import { unarchive } from '../index.js';
 import { removeExtension } from '../utils.js';

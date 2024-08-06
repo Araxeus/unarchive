@@ -2,7 +2,7 @@
 
 This tool is a utility wrapper around the [compressing](https://www.npmjs.com/package/compressing) package
 
-it automatically detects the compression type and extracts the archive
+it automatically detects the compression type (zip/tar/tar.gz) and extracts the content of the archive
 
 ## Installation
 
@@ -14,6 +14,8 @@ or
 
 ```bash
 yarn add unarchive
+pnpm add unarchive
+bun add unarchive
 ```
 
 ## Usage

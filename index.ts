@@ -31,6 +31,7 @@ export async function unarchive(
             );
             break;
         case 'gz':
+        case 'tar.gz':
             await compressing.tgz.uncompress(
                 input as compressing.sourceType,
                 dest,
@@ -68,7 +69,7 @@ async function getFileType(
         input instanceof ArrayBuffer ||
         input instanceof Buffer
     ) {
-        return fileTypeFromBuffer(input);
+        return fileTypeFromBuffer(input as Uint8Array);
     }
 
     return fileTypeFromStream(input as Readable);

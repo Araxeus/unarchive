@@ -1,40 +1,37 @@
 {
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "files": {
-    "ignore": [
-      "./node_modules/**",
-      "./dist/*"
-    ]
-  },
-  "json": {
+    "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "includes": ["**", "!node_modules", "!dist", "!tests/results"]
+    },
+    "json": {
+        "formatter": {
+            "enabled": false
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single"
+        }
+    },
     "formatter": {
-      "enabled": false
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUndeclaredVariables": "error",
+                "noUnusedVariables": "error"
+            },
+            "style": {
+                "noParameterAssign": "off"
+            },
+            "nursery": {
+                "recommended": true
+            }
+        }
     }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "single"
-    }
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 4
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "correctness": {
-        "noUndeclaredVariables": "error",
-        "noUnusedVariables": "error"
-      },
-      "style": {
-        "noParameterAssign": "off"
-      },
-      "nursery": {
-        "recommended": true
-      }
-    }
-  }
 }

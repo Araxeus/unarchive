@@ -31,6 +31,11 @@ export async function unarchive(
             );
             break;
         case 'gz':
+            await compressing.gzip.uncompress(
+                input as compressing.sourceType,
+                dest,
+            );
+            break;
         case 'tar.gz':
             await compressing.tgz.uncompress(
                 input as compressing.sourceType,

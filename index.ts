@@ -5,7 +5,7 @@ import {
     fileTypeFromFile,
     fileTypeFromStream,
 } from 'file-type';
-import { removeExtension } from './utils.js';
+import { crxToZip, getFileBuffer, removeExtension } from './utils.js';
 
 export async function unarchive(
     input: string | Buffer | NodeJS.ReadableStream,
@@ -39,6 +39,12 @@ export async function unarchive(
         case 'tar.gz':
             await compressing.tgz.uncompress(
                 input as compressing.sourceType,
+                dest,
+            );
+            break;
+        case 'crx':
+            await compressing.zip.uncompress(
+                crxToZip(await getFileBuffer(input)),
                 dest,
             );
             break;

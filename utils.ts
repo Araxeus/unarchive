@@ -2,6 +2,10 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 
+// Magic bytes constants
+const ZIP_MAGIC = new Uint8Array([0x50, 0x4b, 0x03, 0x04]); // PK..
+const CRX_MAGIC = new Uint8Array([0x43, 0x72, 0x32, 0x34]); // Cr24
+
 export function removeExtension(input: string) {
     const res = input.slice(0, input.lastIndexOf(path.extname(input)));
     return res.endsWith('.tar') ? res.slice(0, -4) : res;
@@ -27,49 +31,30 @@ export async function getFileBuffer(
 // Credits for the original function go to Rob--W
 // https://github.com/Rob--W/crxviewer/blob/master/src/lib/crx-to-zip.js
 export function crxToZip(buf: Buffer): Buffer {
-    function calcLength(a: number, b: number, c: number, d: number) {
-        let length = 0;
+    const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+    const header = buf.subarray(0, 4);
 
-        length += a << 0;
-        length += b << 8;
-        length += c << 16;
-        length += (d << 24) >>> 0;
-        return length;
-    }
-
-    // 50 4b 03 04
-    // This is actually a zip file
-    if (buf[0] === 80 && buf[1] === 75 && buf[2] === 3 && buf[3] === 4) {
+    // Already a zip file
+    if (header.every((byte, i) => byte === ZIP_MAGIC[i])) {
         return buf;
     }
 
-    // 43 72 32 34 (Cr24)
-    if (buf[0] !== 67 || buf[1] !== 114 || buf[2] !== 50 || buf[3] !== 52) {
+    // Validate CRX magic header
+    if (!header.every((byte, i) => byte === CRX_MAGIC[i])) {
         throw new Error('Invalid header: Does not start with Cr24');
     }
 
-    // 02 00 00 00
-    // or
-    // 03 00 00 00
-    const isV3 = buf[4] === 3;
-    const isV2 = buf[4] === 2;
-
-    if ((!isV2 && !isV3) || buf[5] || buf[6] || buf[7]) {
+    const version = view.getUint32(4, true);
+    if (version !== 2 && version !== 3) {
         throw new Error('Unexpected crx format version number.');
     }
 
-    if (isV2) {
-        const publicKeyLength = calcLength(buf[8], buf[9], buf[10], buf[11]);
-        const signatureLength = calcLength(buf[12], buf[13], buf[14], buf[15]);
+    const zipStartOffset =
+        version === 2
+            ? // v2: magic(4) + version(4) + pubKeyLen(4) + sigLen(4) + pubKey + sig
+              16 + view.getUint32(8, true) + view.getUint32(12, true)
+            : // v3: magic(4) + version(4) + headerSize(4) + header
+              12 + view.getUint32(8, true);
 
-        // 16 = Magic number (4), CRX format version (4), lengths (2x4)
-        const zipStartOffset = 16 + publicKeyLength + signatureLength;
-
-        return buf.slice(zipStartOffset, buf.length);
-    }
-    // v3 format has header size and then header
-    const headerSize = calcLength(buf[8], buf[9], buf[10], buf[11]);
-    const zipStartOffset = 12 + headerSize;
-
-    return buf.slice(zipStartOffset, buf.length);
+    return buf.subarray(zipStartOffset);
 }

@@ -31,10 +31,14 @@
   "keywords": [
     "uncompress",
     "archive",
+    "extract",
+    "decompress",
     "tar",
     "zip",
     "tgz",
-    "targz"
+    "targz",
+    "xpi",
+    "crx"
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",

@@ -1,4 +1,4 @@
-import { readFile, rm } from 'node:fs/promises';
+import { readdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 
 import { unarchive } from '../index.js';
@@ -8,18 +8,12 @@ const redBackground = (str: string) => `\x1b[41m${str}\x1b[0m`;
 const greenBackground = (str: string) => `\x1b[42m${str}\x1b[0m`;
 const greenText = (str: string) => `\x1b[32m${str}\x1b[0m`;
 
-const fixtures = [
-    'test-zip.zip',
-    'test-tar.tar',
-    'test-tgz1.tar.gz',
-    'test-tgz2.tgz',
-];
+const testsDir = path.join(process.cwd(), 'tests');
 
-const fixturesPaths = fixtures.map((p) =>
-    path.join(process.cwd(), 'tests', 'fixtures', p),
-);
+const fixtures = await readdir(path.join(testsDir, 'fixtures'));
+const fixturesPaths = fixtures.map((p) => path.join(testsDir, 'fixtures', p));
 
-const dest = path.join(process.cwd(), 'tests', 'results');
+const dest = path.join(testsDir, 'results');
 for (const fixturePath of fixturesPaths) {
     await unarchive(fixturePath, dest);
     console.log(`Unarchived ${fixturePath} to ${dest}`);

@@ -26,5 +26,3 @@ jobs:
       - run: bun run ci
         
       - run: npm publish --provenance --access public
-        # this only works because this package has no dependencies that need to be built
-

@@ -5,7 +5,10 @@ import {
     fileTypeFromFile,
     fileTypeFromStream,
 } from 'file-type';
+import { FileTypeError } from './filetype-error.js';
 import { crxToZip, getFileBuffer, removeExtension } from './utils.js';
+
+export { FileTypeError } from './filetype-error.js';
 
 export async function unarchive(
     input: string | Buffer | NodeJS.ReadableStream,
@@ -42,12 +45,12 @@ export async function unarchive(
                 dest,
             );
             break;
-        case 'crx':
-            await compressing.zip.uncompress(
-                crxToZip(await getFileBuffer(input)),
-                dest,
-            );
+        case 'crx': {
+            const crxBuff = await getFileBuffer(input);
+            const zipBuffer = crxToZip(crxBuff);
+            await compressing.zip.uncompress(zipBuffer, dest);
             break;
+        }
         // biome-ignore lint/complexity/noUselessSwitchCase: for clarity
         case 'zip':
         default:
@@ -56,9 +59,12 @@ export async function unarchive(
                     input as compressing.sourceType,
                     dest,
                 );
-            } catch (e) {
-                console.error(e);
-                throw new Error(`Unknown file type for ${input}`);
+            } catch {
+                throw new FileTypeError({
+                    filetype: type?.ext,
+                    meme: type?.mime,
+                    filepath: typeof input === 'string' ? input : undefined,
+                });
             }
     }
 }

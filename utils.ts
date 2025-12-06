@@ -55,14 +55,14 @@ export function crxToZip(buf: Buffer): Buffer {
     // Validate CRX magic header
     if (!header.every((byte, i) => byte === CRX_MAGIC[i])) {
         throw new Error(
-            `Invalid header: Expected Cr24 but found ${header.toString('hex')}`,
+            `Invalid CRX header: Expected Cr24 but found ${header.toString('hex')}`,
         );
     }
 
     const version = view.getUint32(4, true);
     if (version !== 2 && version !== 3) {
         throw new Error(
-            `Unexpected crx format version: ${version}. Only versions 2 and 3 are supported.`,
+            `Unexpected CRX format version: ${version}. Only versions 2 and 3 are supported.`,
         );
     }
 

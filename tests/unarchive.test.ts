@@ -13,7 +13,12 @@ const dest = path.join(testsDir, 'results');
 describe.each(fixtures)('%#: Unarchive %s', async (fixture) => {
     const fixturePath = path.join(goodFixturesPath, fixture);
     test('should unarchive with no errors', async () => {
-        await unarchive(fixturePath, dest);
+        // For .gz files (not .tar.gz), unarchive to a specific file path
+        const destPath =
+            fixturePath.endsWith('.gz') && !fixturePath.endsWith('.tar.gz')
+                ? path.join(dest, 'test-gz.txt')
+                : dest;
+        await unarchive(fixturePath, destPath);
     });
 
     test('should create the expected file with correct content', async () => {
@@ -25,6 +30,13 @@ describe.each(fixtures)('%#: Unarchive %s', async (fixture) => {
         const expected = `hello from ${path.basename(destPath, '.txt')}`;
         expect(file).toBe(expected);
     });
+});
+
+test('should throw if unarchive .gz files (not .tar.gz) to a folder path instead of file path', async () => {
+    const gzFixture = path.join(goodFixturesPath, 'test-gz.gz');
+    expect(async () => {
+        await unarchive(gzFixture, dest);
+    }).toThrow(/^EISDIR: illegal operation on a directory, open/);
 });
 
 test('should throw if CRX file too small', async () => {

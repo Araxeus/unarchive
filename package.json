@@ -36,7 +36,9 @@
     "tgz",
     "targz",
     "xpi",
-    "crx"
+    "crx",
+    "gz",
+    "gzip"
   ],
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",

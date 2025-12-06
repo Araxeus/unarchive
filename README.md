@@ -31,6 +31,7 @@ await unarchive(archiveName, 'outputFolder')
 
 - zip
 - tar
+- gz (gzip files)
 - tar.gz / tgz
 - xpi (Firefox extension files)
 - crx (Chrome extension files)

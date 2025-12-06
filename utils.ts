@@ -12,12 +12,16 @@ export function removeExtension(input: string) {
 }
 
 export async function getFileBuffer(
-    input: string | Buffer | Readable,
+    input: string | Buffer<ArrayBufferLike> | Readable,
 ): Promise<Buffer> {
     if (typeof input === 'string') {
         return await readFile(input);
     } else if (input instanceof Buffer) {
         return input;
+    } else if (input instanceof Uint8Array) {
+        return Buffer.from(input);
+    } else if (input instanceof ArrayBuffer) {
+        return Buffer.from(input);
     } else if (input instanceof Readable) {
         const chunks: Buffer[] = [];
         for await (const chunk of input) {

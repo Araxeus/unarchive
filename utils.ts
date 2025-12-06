@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
+import { extname } from 'node:path';
 import { Readable } from 'node:stream';
 
 // Magic bytes constants
@@ -7,7 +7,7 @@ const ZIP_MAGIC = new Uint8Array([0x50, 0x4b, 0x03, 0x04]); // PK..
 const CRX_MAGIC = new Uint8Array([0x43, 0x72, 0x32, 0x34]); // Cr24
 
 export function removeExtension(input: string) {
-    const res = input.slice(0, input.lastIndexOf(path.extname(input)));
+    const res = input.slice(0, input.lastIndexOf(extname(input)));
     return res.endsWith('.tar') ? res.slice(0, -4) : res;
 }
 

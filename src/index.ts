@@ -1,14 +1,17 @@
-import type { Readable } from 'node:stream';
+import { Readable } from 'node:stream';
 import compressing from 'compressing';
 import {
     fileTypeFromBuffer,
     fileTypeFromFile,
     fileTypeFromStream,
 } from 'file-type';
-import { removeExtension } from './utils.js';
+import { FileTypeError } from './filetype-error.js';
+import { crxToZip, getFileBuffer, removeExtension } from './utils.js';
+
+export { FileTypeError } from './filetype-error.js';
 
 export async function unarchive(
-    input: string | Buffer | NodeJS.ReadableStream,
+    input: string | Buffer | Readable,
     dest?: string,
 ) {
     const type = await getFileType(input);
@@ -42,6 +45,12 @@ export async function unarchive(
                 dest,
             );
             break;
+        case 'crx': {
+            const crxBuff = await getFileBuffer(input);
+            const zipBuffer = crxToZip(crxBuff);
+            await compressing.zip.uncompress(zipBuffer, dest);
+            break;
+        }
         // biome-ignore lint/complexity/noUselessSwitchCase: for clarity
         case 'zip':
         default:
@@ -50,32 +59,26 @@ export async function unarchive(
                     input as compressing.sourceType,
                     dest,
                 );
-            } catch (e) {
-                console.error(e);
-                throw new Error(`Unknown file type for ${input}`);
+            } catch {
+                throw new FileTypeError({
+                    filetype: type?.ext,
+                    mime: type?.mime,
+                    filepath: typeof input === 'string' ? input : undefined,
+                });
             }
     }
 }
 
-async function getFileType(
-    input:
-        | string
-        | Uint8Array
-        | ArrayBuffer
-        | Buffer
-        | Readable
-        | NodeJS.ReadableStream,
-) {
+async function getFileType(input: string | Buffer | Readable) {
     if (typeof input === 'string') {
         return fileTypeFromFile(input);
     }
-    if (
-        input instanceof Uint8Array ||
-        input instanceof ArrayBuffer ||
-        input instanceof Buffer
-    ) {
+    if (input instanceof Buffer) {
         return fileTypeFromBuffer(input as Uint8Array);
     }
 
-    return fileTypeFromStream(input as Readable);
+    if (input instanceof Readable) {
+        return fileTypeFromStream(input as Readable);
+    }
+    return undefined;
 }

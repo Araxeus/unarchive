@@ -2,21 +2,21 @@ import { normalize } from 'node:path';
 
 export class FileTypeError extends Error {
     filetype: string | undefined;
-    meme: string | undefined;
+    mime: string | undefined;
     filepath: string | undefined;
 
     constructor({
         filetype,
-        meme,
+        mime,
         filepath,
     }: {
         filetype?: string;
-        meme?: string;
+        mime?: string;
         filepath?: string;
     } = {}) {
         super('Unsupported file type');
         this.name = 'FileTypeError';
-        this.meme = meme;
+        this.mime = mime;
         this.filetype = filetype;
         this.filepath = filepath ? normalize(filepath) : undefined;
     }

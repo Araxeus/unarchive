@@ -62,7 +62,7 @@ export async function unarchive(
             } catch {
                 throw new FileTypeError({
                     filetype: type?.ext,
-                    meme: type?.mime,
+                    mime: type?.mime,
                     filepath: typeof input === 'string' ? input : undefined,
                 });
             }

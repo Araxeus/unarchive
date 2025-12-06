@@ -10,7 +10,7 @@ const badFixturesPath = path.join(testsDir, 'fixtures', 'bad');
 const fixtures = await readdir(goodFixturesPath);
 const dest = path.join(testsDir, 'results');
 
-describe.each(fixtures)('%#: Unarchive %s', (fixture) => {
+describe.each(fixtures)('%#: Unarchive %s', async (fixture) => {
     const fixturePath = path.join(goodFixturesPath, fixture);
     test('should unarchive with no errors', async () => {
         await unarchive(fixturePath, dest);
@@ -27,7 +27,7 @@ describe.each(fixtures)('%#: Unarchive %s', (fixture) => {
     });
 });
 
-test('should throw if CRX file too small', () => {
+test('should throw if CRX file too small', async () => {
     const smallCrx = Buffer.from([
         0x43, 0x72, 0x32, 0x34, 0x00, 0x00, 0x00, 0x00,
     ]);
@@ -36,7 +36,7 @@ test('should throw if CRX file too small', () => {
     }).toThrow('Invalid CRX: File too small');
 });
 
-test('should throw if crx version number is malformed', () => {
+test('should throw if crx version number is malformed', async () => {
     const malformedCrxV = path.join(badFixturesPath, 'crx-malformed-v.crx');
     expect(async () => {
         await unarchive(malformedCrxV, path.join(dest, 'crx-malformed-v'));
@@ -45,7 +45,7 @@ test('should throw if crx version number is malformed', () => {
     );
 });
 
-test('should throw if unsupported file type', () => {
+test('should throw if unsupported file type', async () => {
     const unsupportedFile = path.join(badFixturesPath, 'test-7z.7z');
     expect(async () => {
         await unarchive(unsupportedFile, path.join(dest, 'test-7z'));

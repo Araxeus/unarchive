@@ -4,7 +4,7 @@ import { Readable } from 'node:stream';
 
 // Magic bytes constants
 const ZIP_MAGIC = new Uint8Array([0x50, 0x4b, 0x03, 0x04]); // PK..
-const CRX_MAGIC = new Uint8Array([0x43, 0x72, 0x32, 0x34]); // Cr24
+export const CRX_MAGIC = new Uint8Array([0x43, 0x72, 0x32, 0x34]); // Cr24
 
 export function removeExtension(input: string) {
     const res = input.slice(0, input.lastIndexOf(extname(input)));
@@ -67,6 +67,13 @@ export function crxToZip(buf: Buffer): Buffer {
     if (version !== 2 && version !== 3) {
         throw new Error(
             `Unexpected CRX format version: ${version}. Only versions 2 and 3 are supported.`,
+        );
+    }
+
+    // For CRX v2, we need at least 16 bytes to read pubKeyLen and sigLen
+    if (version === 2 && buf.length < 16) {
+        throw new Error(
+            'Invalid CRX v2: File too small to contain header lengths',
         );
     }
 

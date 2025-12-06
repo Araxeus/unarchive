@@ -11,7 +11,7 @@ import { crxToZip, getFileBuffer, removeExtension } from './utils.js';
 export { FileTypeError } from './filetype-error.js';
 
 export async function unarchive(
-    input: string | Buffer | NodeJS.ReadableStream,
+    input: string | Buffer | Readable,
     dest?: string,
 ) {
     const type = await getFileType(input);

@@ -12,7 +12,7 @@ export function removeExtension(input: string) {
 }
 
 export async function getFileBuffer(
-    input: string | Buffer | NodeJS.ReadableStream,
+    input: string | Buffer | Readable,
 ): Promise<Buffer> {
     if (typeof input === 'string') {
         return await readFile(input);

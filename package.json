@@ -17,11 +17,10 @@
     }
   },
   "scripts": {
-    "b": "tsc && bun ignore-tests",
+    "b": "tsc",
     "check": "biome check",
     "lint": "biome check --write",
     "ci": "bun b && biome ci . && node ./dist/tests/test.js",
-    "ignore-tests": "echo '*' > ./dist/tests/.npmignore",
     "tests": "tsc && bun ./dist/tests/test.js"
   },
   "dependencies": {

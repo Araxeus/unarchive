@@ -1,8 +1,8 @@
 import { afterAll, describe, expect, test } from 'bun:test';
 import { readdir, rm } from 'node:fs/promises';
 import path from 'node:path';
-import { FileTypeError, unarchive } from '../index.js';
-import { removeExtension } from '../utils.js';
+import { FileTypeError, unarchive } from '../src/index.js';
+import { removeExtension } from '../src/utils.js';
 
 const testsDir = path.join(process.cwd(), 'tests');
 const goodFixturesPath = path.join(testsDir, 'fixtures', 'good');

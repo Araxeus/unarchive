@@ -1,4 +1,4 @@
-import type { Readable } from 'node:stream';
+import { Readable } from 'node:stream';
 import compressing from 'compressing';
 import {
     fileTypeFromBuffer,
@@ -69,25 +69,16 @@ export async function unarchive(
     }
 }
 
-async function getFileType(
-    input:
-        | string
-        | Uint8Array
-        | ArrayBuffer
-        | Buffer
-        | Readable
-        | NodeJS.ReadableStream,
-) {
+async function getFileType(input: string | Buffer | Readable) {
     if (typeof input === 'string') {
         return fileTypeFromFile(input);
     }
-    if (
-        input instanceof Uint8Array ||
-        input instanceof ArrayBuffer ||
-        input instanceof Buffer
-    ) {
+    if (input instanceof Buffer) {
         return fileTypeFromBuffer(input as Uint8Array);
     }
 
-    return fileTypeFromStream(input as Readable);
+    if (input instanceof Readable) {
+        return fileTypeFromStream(input as Readable);
+    }
+    return undefined;
 }

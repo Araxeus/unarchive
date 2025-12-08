@@ -2,7 +2,7 @@
   "name": "unarchive",
   "author": "Araxeus",
   "description": "Automatically extract archives of various types",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "license": "MIT",
   "repository": "https://github.com/Araxeus/unarchive",

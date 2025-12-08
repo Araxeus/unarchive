@@ -2,7 +2,7 @@
 
 This tool is a utility wrapper around the [compressing](https://www.npmjs.com/package/compressing) package
 
-it automatically detects the compression type (zip/tar/tar.gz) and extracts the content of the archive
+it automatically detects the compression type (zip/tar/tar.gz/gz/crx/xpi) and extracts the content of the archive
 
 ## Installation
 
@@ -31,4 +31,7 @@ await unarchive(archiveName, 'outputFolder')
 
 - zip
 - tar
+- gz (gzip files)
 - tar.gz / tgz
+- xpi (Firefox extension files)
+- crx (Chrome extension files)

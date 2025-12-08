@@ -24,5 +24,6 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun ci
       - run: bun run ci
+      - run: bun b
 
       - run: npm publish --provenance --access public

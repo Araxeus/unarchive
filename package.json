@@ -23,8 +23,8 @@
     "ci": "biome ci && tsc --noEmit && bun test"
   },
   "dependencies": {
-    "compressing": "^2.0.0",
-    "file-type": "^21.1.1"
+    "compressing": "^2.1.0",
+    "file-type": "^21.3.0"
   },
   "keywords": [
     "uncompress",
